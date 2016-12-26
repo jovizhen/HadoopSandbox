@@ -26,7 +26,7 @@ public class WordCount extends Configured implements Tool{
 	    job.setJarByClass(WordCount.class);
 	    
 	    FileInputFormat.addInputPath(job, new Path(args[0]));
-	    FileOutputFormat.setOutputPath(job, new Path(args[0]));
+	    FileOutputFormat.setOutputPath(job, new Path(args[1]));
 	    
 	    job.setMapperClass(WordCountMapper.class);
 	    job.setCombinerClass(WordCountIntSumReducer.class);
