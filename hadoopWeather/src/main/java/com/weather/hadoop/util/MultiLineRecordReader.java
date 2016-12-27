@@ -1,5 +1,6 @@
 package com.weather.hadoop.util;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +30,7 @@ public class MultiLineRecordReader extends RecordReader<Text, List<Text>>{
 	protected Reader in;
 	private Text key = null;
 	private List<Text> value = null;
-	private Boolean isZipFile;
+	private Boolean isZipFile = false;
 	private InputStream is;
 	
 	
@@ -41,6 +42,7 @@ public class MultiLineRecordReader extends RecordReader<Text, List<Text>>{
 		start = split.getStart();
 		end = start + split.getLength();
 		final Path file = split.getPath();
+		isZipFile = file.getName().endsWith(".zip");
 		compressionCodecs = new CompressionCodecFactory(conf);
 		final CompressionCodec codec = compressionCodecs.getCodec(file);
 
@@ -74,6 +76,11 @@ public class MultiLineRecordReader extends RecordReader<Text, List<Text>>{
 	 * @throws IOException
 	 */
 	public void init(InputStream is, Configuration conf) throws IOException {
+		if (isZipFile) {
+			ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
+			zis.getNextEntry();
+			is = zis;
+		}
 		this.is = is;
 		this.in = new BufferedReader(new InputStreamReader(is));
 	}
