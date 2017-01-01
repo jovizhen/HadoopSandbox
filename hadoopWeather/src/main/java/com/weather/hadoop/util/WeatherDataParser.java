@@ -23,7 +23,7 @@ public class WeatherDataParser {
 	}
 	
 	public void parse(String header, String record){
-		String airTempString = record.substring(23,28).trim();
+		String airTempString = record.substring(22,27).trim();
 		year = header.substring(13,17).trim();
 		airTemperature = Integer.parseInt(airTempString);
 	}

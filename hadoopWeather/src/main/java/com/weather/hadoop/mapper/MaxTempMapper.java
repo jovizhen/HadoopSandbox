@@ -16,9 +16,11 @@ public class MaxTempMapper extends Mapper<Text, List<Text>, Text, IntWritable>{
 			throws IOException, InterruptedException {
 		
 		WeatherDataParser parser = new WeatherDataParser();
-		parser.parse(key.toString(), value.toString());
-		if(parser.isValidTemperature()){
-			context.write(new Text(parser.getYear()), new IntWritable(parser.getAirTemperature()));
+		for(Text text : value){
+			parser.parse(key.toString(), text.toString());
+			if(parser.isValidTemperature()){
+				context.write(new Text(parser.getYear()), new IntWritable(parser.getAirTemperature()));
+			}
 		}
 	}
 }
