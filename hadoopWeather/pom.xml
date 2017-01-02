@@ -62,9 +62,9 @@
 					<manifest>
 					<!--  
 						<mainClass>com.example.hadoop.WordCount</mainClass>
-					-->
 						<mainClass>com.weather.hadoop.MaxTemperatureDriver</mainClass>
-						<!-- <mainClass>com.weather.hadoop.DataConverterDriver</mainClass> -->
+					-->
+						<mainClass>com.weather.hadoop.DataConverterDriver</mainClass>
 					</manifest>
 				</archive>
 			</configuration>

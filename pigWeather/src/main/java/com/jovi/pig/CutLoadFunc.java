@@ -27,14 +27,12 @@ public class CutLoadFunc extends LoadFunc {
 
   private static final Log LOG = LogFactory.getLog(CutLoadFunc.class);
 
-  private final List<Range> hRanges;
   private final List<Range> ranges;
   private final TupleFactory tupleFactory = TupleFactory.getInstance();
-  private MultiLineRecordReader reader;
+  private RecordReader reader;
 
-  public CutLoadFunc(String cutHPatternString, String cutPattern) {
+  public CutLoadFunc(String cutPattern) {
     ranges = Range.parse(cutPattern);
-    hRanges = Range.parse(cutHPatternString);
   }
   
   @Override
@@ -45,12 +43,12 @@ public class CutLoadFunc extends LoadFunc {
   
   @Override
   public InputFormat getInputFormat() {
-    return new MultiLineInputFormat();
+    return new TextInputFormat();
   }
   
   @Override
   public void prepareToRead(RecordReader reader, PigSplit split) {
-    this.reader = (MultiLineRecordReader) reader;
+    this.reader = reader;
   }
 
   @Override
@@ -59,14 +57,9 @@ public class CutLoadFunc extends LoadFunc {
       if (!reader.nextKeyValue()) {
         return null;
       }
-      Text key = (Text) reader.getCurrentKey();
-      List<Text> value = reader.getCurrentValue();
+      Text value = (Text) reader.getCurrentValue();
       String line = value.toString();
-      int tupleSize = hRanges.size()+ranges.size();
-      for (Text rec : value){
-    	  Tuple tuple = tupleFactory.newTuple(tupleSize);
-      }
-      Tuple tuple = tupleFactory.newTuple(tupleSize);
+      Tuple tuple = tupleFactory.newTuple(ranges.size());
       for (int i = 0; i < ranges.size(); i++) {
         Range range = ranges.get(i);
         if (range.getEnd() > line.length()) {
@@ -75,7 +68,7 @@ public class CutLoadFunc extends LoadFunc {
               range.getEnd(), line.length()));
           continue;
         }
-        tuple.set(i, new DataByteArray(range.getSubstring(line)));
+        tuple.set(i, new DataByteArray(range.getSubstring(line).trim()));
       }
       return tuple;
     } catch (InterruptedException e) {

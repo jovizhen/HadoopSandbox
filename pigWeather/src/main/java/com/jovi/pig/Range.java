@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.jovi.pig.util.WeatherRangeSpecIGRA2;
+
 public class Range {
   private final int start;
   private final int end;
@@ -47,6 +49,7 @@ public class Range {
     List<Range> ranges = new ArrayList<Range>();
     String[] specs = rangeSpec.split(",");
     for (String spec : specs) {
+      spec = WeatherRangeSpecIGRA2.valueOf(spec.toUpperCase().trim()).spec();
       String[] split = spec.split("-");
       try {
         ranges.add(new Range(Integer.parseInt(split[0]), Integer
@@ -57,5 +60,4 @@ public class Range {
     }
     return ranges;
   }
-
 }
