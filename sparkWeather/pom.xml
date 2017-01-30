@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.jov.mr</groupId>
+  <artifactId>sparkWeather</artifactId>
+  <packaging>jar</packaging>
+  <version>0.0.1</version>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-core_2.10</artifactId>
+      <version>2.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-mapred</artifactId>
+      <version>1.7.6</version> <!-- Spark fails with Avro 1.7.7. TODO: investigate why -->
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <!-- Spark uses a later version of Guava than Hadoop -->
+      <!-- TODO: remove when we upgrade to Spark 1.2.0, since it shades Guava https://issues.apache.org/jira/browse/SPARK-2848 -->
+      <version>14.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+	    <groupId>org.scalatest</groupId>
+	    <artifactId>scalatest_2.11</artifactId>
+	    <version>2.1.7</version>
+	</dependency>
+  </dependencies>
+
+</project>

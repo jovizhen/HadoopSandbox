@@ -21,6 +21,7 @@
 .recommenders/
 RemoteSystemsTempFiles/
 .settings/
+/target/
 
 # OS generated files #
 ######################
